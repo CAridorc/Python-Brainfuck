@@ -8,10 +8,11 @@
 import sys
 import getch
 
+BRAINFUCK_CHARSET = ['.', ',', '[', ']', '<', '>', '+', '-']
+
 def execute(filename):
-  f = open(filename, "r")
-  evaluate(f.read())
-  f.close()
+  with open(filename, "r") as f:
+      evaluate(f.read())
 
 
 def evaluate(code):
@@ -45,8 +46,7 @@ def evaluate(code):
 
 
 def cleanup(code):
-  return filter(lambda x: x in ['.', ',', '[', ']', '<', '>', '+', '-'], code)
-
+    return [char for char in code if char in BRAINFUCK_CHARSET]
 
 def buildbracemap(code):
   temp_bracestack, bracemap = [], {}
@@ -62,7 +62,7 @@ def buildbracemap(code):
 
 def main():
   if len(sys.argv) == 2: execute(sys.argv[1])
-  else: print "Usage:", sys.argv[0], "filename"
+  else: print("Usage:", sys.argv[0], "filename")
 
 if __name__ == "__main__": main()
 
